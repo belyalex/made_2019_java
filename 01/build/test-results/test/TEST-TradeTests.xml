@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="TradeTests" tests="5" skipped="0" failures="0" errors="0" timestamp="2019-10-18T17:25:33" hostname="ubuntu" time="0.232">
+  <properties/>
+  <testcase name="TestCommoditySpot" classname="TradeTests" time="0.133"/>
+  <testcase name="TestBond" classname="TradeTests" time="0.016"/>
+  <testcase name="TestFxSpot" classname="TradeTests" time="0.029"/>
+  <testcase name="TestIrSwap" classname="TradeTests" time="0.004"/>
+  <testcase name="TestBadStrings" classname="TradeTests" time="0.048"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[null
+null
+null
+null
+null
+null
+null
+null
+]]></system-err>
+</testsuite>
