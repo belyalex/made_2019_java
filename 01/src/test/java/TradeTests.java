@@ -45,6 +45,9 @@ public class TradeTests {
                     "}"
     };
 
+    private TradeParser tpSwitch=new TradeParser(new SwitchTradeCreator());
+    private TradeParser tpEnum=new TradeParser(new EnumTradeCreator());
+
 
     @Test
     public void TestBadStrings() {
@@ -54,37 +57,39 @@ public class TradeTests {
     }
 
     private void TestBadString(String s) {
-        TestBadString(s, 1);
-        TestBadString(s, 2);
+        TestBadString(s, tpSwitch);
+        TestBadString(s, tpEnum);
     }
 
-    private void TestBadString(String s, int method) {
-        Trade t = Main.readTrade(convertStringToInputStream(s), method);
+    private void TestBadString(String s, TradeParser tp) {
+        Trade t = tp.readTrade(convertStringToInputStream(s));
         assertNull(t);
     }
 
     @Test
     public void TestBond() {
-        TestBond(1);
-        TestBond(2);
+        TestBond(tpSwitch);
+        TestBond(tpEnum);
     }
 
-    private void TestBond(int method) {
-        Trade t = Main.readTrade(convertStringToInputStream(sBond), method);
+    private void TestBond(TradeParser tp) {
+        Trade t = tp.readTrade(convertStringToInputStream(sBond));
         assertTrue(t instanceof Bond);
         assertEquals(10.5, t.getPrice());
+        assertEquals("Trade {class homework01.Bond, price: 10.5}", t.toString());
     }
 
     @Test
     public void TestCommoditySpot() {
-        TestCommoditySpot(1);
-        TestCommoditySpot(2);
+        TestCommoditySpot(tpSwitch);
+        TestCommoditySpot(tpEnum);
     }
 
-    private void TestCommoditySpot(int method) {
-        Trade t = Main.readTrade(convertStringToInputStream(sCommoditySpot), method);
+    private void TestCommoditySpot(TradeParser tp) {
+        Trade t = tp.readTrade(convertStringToInputStream(sCommoditySpot));
         assertTrue(t instanceof CommoditySpot);
         assertEquals(0.65, t.getPrice());
+        assertEquals("Trade {class homework01.CommoditySpot, price: 0.65}", t.toString());
     }
 
     private InputStream convertStringToInputStream(String s) {
@@ -93,25 +98,27 @@ public class TradeTests {
 
     @Test
     public void TestIrSwap() {
-        TestIrSwap(1);
-        TestIrSwap(2);
+        TestIrSwap(tpSwitch);
+        TestIrSwap(tpEnum);
     }
 
-    private void TestIrSwap(int method) {
-        Trade t = Main.readTrade(convertStringToInputStream(sIrSwap), method);
+    private void TestIrSwap(TradeParser tp) {
+        Trade t = tp.readTrade(convertStringToInputStream(sIrSwap));
         assertTrue(t instanceof IrSwap);
         assertEquals(100.0, t.getPrice());
+        assertEquals("Trade {class homework01.IrSwap, price: 100.0}", t.toString());
     }
 
     @Test
     public void TestFxSpot() {
-        TestFxSpot(1);
-        TestFxSpot(2);
+        TestFxSpot(tpSwitch);
+        TestFxSpot(tpEnum);
     }
 
-    private void TestFxSpot(int method) {
-        Trade t = Main.readTrade(convertStringToInputStream(sFxSpot), method);
+    private void TestFxSpot(TradeParser tp) {
+        Trade t = tp.readTrade(convertStringToInputStream(sFxSpot));
         assertTrue(t instanceof FxSpot);
         assertEquals(20.0, t.getPrice());
+        assertEquals("Trade {class homework01.FxSpot, price: 20.0}", t.toString());
     }
 }

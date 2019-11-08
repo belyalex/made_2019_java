@@ -13,6 +13,6 @@ public abstract class Trade {
 
     @Override
     public String toString() {
-        return "{" + this.getClass().toString() + ", price: " + price.toString() + "}";
+        return "Trade {" + this.getClass().toString() + ", price: " + price.toString() + "}";
     }
 }
