@@ -1,10 +1,6 @@
 package homework02;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static java.lang.Math.abs;
 
@@ -17,10 +13,6 @@ public class SimpleHashMap<K, V> implements SimpleMap<K, V> {
     private int capacity = initial_capacity;
 
     private final double loadFactor;
-
-    private Set<K> keySet = new HashSet<K>();
-
-    //private Collection<V> values = new ArrayList<V>();
 
     private int size = 0;
 
@@ -39,14 +31,14 @@ public class SimpleHashMap<K, V> implements SimpleMap<K, V> {
         if (size >= capacity * loadFactor) {
             resize();
         }
-        if (contains(key)) {
-            Node<K, V> node = findKey(key);
+        Node<K, V> node = findKey(key);
+        if (node != null) {
             node.v = value;
         } else {
-            keySet.add(key);
+            //keySet.add(key);
             int hash = abs(key.hashCode());
             int pos = hash % capacity;
-            Node<K, V> node = nodes[pos];
+            node = nodes[pos];
             while ((node != null) && !node.empty) {
                 pos = (pos + step) % capacity;
                 node = nodes[pos];
@@ -54,7 +46,6 @@ public class SimpleHashMap<K, V> implements SimpleMap<K, V> {
             node = new Node<K, V>(key, value);
             nodes[pos] = node;
             size++;
-            return value;
         }
 
         return value;
@@ -62,29 +53,28 @@ public class SimpleHashMap<K, V> implements SimpleMap<K, V> {
 
     @Override
     public V get(K key) {
-        if (!contains(key)) {
-            return null;
-        }
         Node<K, V> node = findKey(key);
+
+        if (node == null) return null;
 
         return node.v;
     }
 
     @Override
     public V remove(K key) {
-        if (!contains(key)) {
-            return null;
-        }
         Node<K, V> node = findKey(key);
-        keySet.remove(key);
+
+        if (node == null) return null;
+
         node.empty = true;
         size--;
+
         return node.v;
     }
 
     @Override
     public boolean contains(K key) {
-        return keySet.contains(key);
+        return findKey(key) != null;
     }
 
     @Override
@@ -92,9 +82,45 @@ public class SimpleHashMap<K, V> implements SimpleMap<K, V> {
         return size;
     }
 
+
     @Override
     public Set<K> keySet() {
-        return keySet;
+        Set<K> ks = new SimpleHashMap.KeySet();
+
+        return ks;
+    }
+
+    final class KeySet extends AbstractSet<K> {
+        @Override
+        public Iterator<K> iterator() {
+            return new Iterator<K>() {
+                private int pos = 0;
+
+                @Override
+                public boolean hasNext() {
+                    int p = pos;
+                    while (p < capacity) {
+                        Node<K, V> node = nodes[p++];
+                        if ((node != null) && (!node.empty)) return true;
+                    }
+                    return false;
+                }
+
+                @Override
+                public K next() {
+                    while (pos < capacity) {
+                        Node<K, V> node = nodes[pos++];
+                        if ((node != null) && (!node.empty)) return node.k;
+                    }
+                    return null;
+                }
+            };
+        }
+
+        @Override
+        public int size() {
+            return size;
+        }
     }
 
     @Override
@@ -112,7 +138,7 @@ public class SimpleHashMap<K, V> implements SimpleMap<K, V> {
         int hash = abs(k.hashCode());
         int pos = hash % capacity;
         Node<K, V> node = nodes[pos];
-        while (!(hash==node.hash) || !k.equals(node.k)) {
+        while ((node != null) && (!(hash == node.hash) || !k.equals(node.k))) {
             pos = (pos + step) % capacity;
             node = nodes[pos];
         }
@@ -125,9 +151,9 @@ public class SimpleHashMap<K, V> implements SimpleMap<K, V> {
         capacity *= 2;
         nodes = (Node<K, V>[]) new Node[capacity];
         size = 0;
-        keySet.clear();
+        //keySet.clear();
         for (Node<K, V> node : old_nodes) {
-            if ((node!=null) && !node.empty) {
+            if ((node != null) && !node.empty) {
                 put(node.k, node.v);
             }
         }

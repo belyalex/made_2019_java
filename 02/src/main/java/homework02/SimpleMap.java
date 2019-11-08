@@ -4,17 +4,17 @@ import java.util.Collection;
 import java.util.Set;
 
 public interface SimpleMap<K, V> {
-        V put(K key, V value);
+    V put(K key, V value);
 
-        V get(K key);
+    V get(K key);
 
-        V remove(K key);
+    V remove(K key);
 
-        boolean contains(K key);
+    boolean contains(K key);
 
-        int size();
+    int size();
 
-        Set<K> keySet();
+    Set<K> keySet();
 
-        Collection<V> values();
+    Collection<V> values();
 }
