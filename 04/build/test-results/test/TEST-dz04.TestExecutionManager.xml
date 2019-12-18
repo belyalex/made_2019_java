@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="dz04.TestExecutionManager" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-12-18T18:02:57" hostname="ubuntu" time="12.029">
+<testsuite name="dz04.TestExecutionManager" tests="1" skipped="0" failures="0" errors="0" timestamp="2019-12-18T18:18:02" hostname="ubuntu" time="12.027">
   <properties/>
-  <testcase name="Test" classname="dz04.TestExecutionManager" time="12.029"/>
-  <system-out><![CDATA[pool-1-thread-2 0
-pool-1-thread-1 0
+  <testcase name="Test" classname="dz04.TestExecutionManager" time="12.027"/>
+  <system-out><![CDATA[pool-1-thread-1 0
+pool-1-thread-2 0
 pool-1-thread-2 1
 pool-1-thread-1 1
 pool-1-thread-2 2
@@ -20,9 +20,9 @@ pool-1-thread-2 9
 pool-1-thread-1 5
 pool-1-thread-1 6
 Finished: false
-Min exec time: 5017
-Max exec time: 5017
-Avg exec time: 5017
+Min exec time: 5018
+Max exec time: 5018
+Avg exec time: 5018
 Completed: 1
 Failed: 0
 Interrupted: 0
@@ -31,9 +31,9 @@ pool-1-thread-1 8
 pool-1-thread-1 9
 All tasks done.
 Finished: true
-Min exec time: 5017
+Min exec time: 5018
 Max exec time: 10019
-Avg exec time: 7518
+Avg exec time: 7519
 Completed: 2
 Failed: 0
 Interrupted: 0

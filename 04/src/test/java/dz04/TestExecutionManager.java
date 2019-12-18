@@ -49,12 +49,12 @@ public class TestExecutionManager {
 
         assertFalse(context.isFinished());
 
-        assertTrue((5000<=context.getStatistics().getMinExecutionTimeInMs())
-                && (6000>context.getStatistics().getMinExecutionTimeInMs()));
-        assertTrue((5000<=context.getStatistics().getMaxExecutionTimeInMs())
-                && (6000>context.getStatistics().getMaxExecutionTimeInMs()));
-        assertTrue((5000<=context.getStatistics().getAverageExecutionTimeInMs())
-                && (6000>context.getStatistics().getAverageExecutionTimeInMs()));
+        assertTrue((5000 <= context.getStatistics().getMinExecutionTimeInMs())
+                && (6000 > context.getStatistics().getMinExecutionTimeInMs()));
+        assertTrue((5000 <= context.getStatistics().getMaxExecutionTimeInMs())
+                && (6000 > context.getStatistics().getMaxExecutionTimeInMs()));
+        assertTrue((5000 <= context.getStatistics().getAverageExecutionTimeInMs())
+                && (6000 > context.getStatistics().getAverageExecutionTimeInMs()));
 
         assertEquals(1, context.getCompletedTaskCount());
         assertEquals(0, context.getFailedTaskCount());
@@ -72,12 +72,12 @@ public class TestExecutionManager {
 
         assertTrue(context.isFinished());
 
-        assertTrue((5000<=context.getStatistics().getMinExecutionTimeInMs())
-                && (6000>context.getStatistics().getMinExecutionTimeInMs()));
-        assertTrue((10000<=context.getStatistics().getMaxExecutionTimeInMs())
-                && (11000>context.getStatistics().getMaxExecutionTimeInMs()));
-        assertTrue((7500<=context.getStatistics().getAverageExecutionTimeInMs())
-                && (8000>context.getStatistics().getAverageExecutionTimeInMs()));
+        assertTrue((5000 <= context.getStatistics().getMinExecutionTimeInMs())
+                && (6000 > context.getStatistics().getMinExecutionTimeInMs()));
+        assertTrue((10000 <= context.getStatistics().getMaxExecutionTimeInMs())
+                && (11000 > context.getStatistics().getMaxExecutionTimeInMs()));
+        assertTrue((7500 <= context.getStatistics().getAverageExecutionTimeInMs())
+                && (8000 > context.getStatistics().getAverageExecutionTimeInMs()));
 
         assertEquals(2, context.getCompletedTaskCount());
         assertEquals(0, context.getFailedTaskCount());
