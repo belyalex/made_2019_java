@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.function.Predicate;
 import java.util.stream.LongStream;
 
 import static java.lang.Math.round;
@@ -20,18 +21,12 @@ public class ContextImpl implements Context {
 
     @Override
     public int getCompletedTaskCount() {
-        return (int) timeredTasks.stream()
-                .filter(TimeredRunnable::isDone)
-                .filter(TimeredRunnable::isCompleted)
-                .count();
+        return getTaskCountWhere(TimeredRunnable::isCompleted);
     }
 
     @Override
     public int getFailedTaskCount() {
-        return (int) timeredTasks.stream()
-                .filter(TimeredRunnable::isDone)
-                .filter(TimeredRunnable::isFailed)
-                .count();
+        return getTaskCountWhere(TimeredRunnable::isFailed);
     }
 
     @Override
@@ -43,19 +38,12 @@ public class ContextImpl implements Context {
 
     @Override
     public void interrupt() {
-        for (Future<?> future : futures) {
-            future.cancel(false);
-        }
+        futures.forEach(future -> future.cancel(false));
     }
 
     @Override
     public boolean isFinished() {
-        for (TimeredRunnable timeredTask : timeredTasks) {
-            if (!timeredTask.isDone()) {
-                return false;
-            }
-        }
-        return true;
+        return getTaskCountWhere(x -> true) == timeredTasks.size();
     }
 
     @Override
@@ -65,11 +53,6 @@ public class ContextImpl implements Context {
             callback.run();
         });
         thread.start();
-    }
-
-    @Override
-    public ExecutionStatistics getStatistics() {
-        return new ExecutionStatisticsImpl(this);
     }
 
     @Override
@@ -83,18 +66,16 @@ public class ContextImpl implements Context {
         }
     }
 
+    @Override
+    public ExecutionStatistics getStatistics() {
+        return new ExecutionStatisticsImpl();
+    }
+
     public class ExecutionStatisticsImpl implements ExecutionStatistics {
-        private final ContextImpl context;
-
-        ExecutionStatisticsImpl(ContextImpl context) {
-            this.context = context;
-        }
-
         @Override
         public int getMinExecutionTimeInMs() {
             return (int) getTimeredRunnableStreamTimes().min().orElse(-1);
         }
-
 
         @Override
         public int getMaxExecutionTimeInMs() {
@@ -107,10 +88,17 @@ public class ContextImpl implements Context {
         }
 
         private LongStream getTimeredRunnableStreamTimes() {
-            return context.timeredTasks.stream()
+            return timeredTasks.stream()
                     .filter(TimeredRunnable::isDone)
                     .mapToLong(TimeredRunnable::getExecTime)
                     .filter(Objects::nonNull);
         }
+    }
+
+    private int getTaskCountWhere(Predicate<? super TimeredRunnable> predicate) {
+        return (int) timeredTasks.stream()
+                .filter(TimeredRunnable::isDone)
+                .filter(predicate)
+                .count();
     }
 }
